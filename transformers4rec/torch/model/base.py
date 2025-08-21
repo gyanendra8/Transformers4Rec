@@ -29,7 +29,7 @@ from merlin.schema import ColumnSchema
 from merlin.schema import Schema as Core_Schema
 from merlin.schema import Tags
 from tqdm import tqdm
-from transformers.modeling_utils import SequenceSummary
+from transformers.modeling_tf_utils import TFSequenceSummary as SequenceSummary
 
 from merlin_standard_lib import Schema
 
@@ -91,9 +91,8 @@ class PredictionTask(torch.nn.Module, LossMixin, MetricsMixin):
     ):
         super().__init__()
         self.summary_type = summary_type
-        self.sequence_summary = SequenceSummary(
-            SimpleNamespace(summary_type=self.summary_type)  # type: ignore
-        )  # noqa
+        config = SimpleNamespace(summary_type=self.summary_type, hidden_size=768)  # type: ignore
+        self.sequence_summary = SequenceSummary(config)  # noqa
         self.target_name = target_name
         self.forward_to_prediction_fn = forward_to_prediction_fn
         self.set_metrics(metrics)
@@ -143,6 +142,14 @@ class PredictionTask(torch.nn.Module, LossMixin, MetricsMixin):
                 self.pre = copy.deepcopy(self.pre)
             else:
                 self.pre = self.pre.build(pre_input_size)
+
+        # Update sequence_summary config with the actual hidden_size
+        if hasattr(self.sequence_summary, 'config'):
+            self.sequence_summary.config.hidden_size = input_size
+        else:
+            # Recreate sequence_summary with correct hidden_size
+            config = SimpleNamespace(summary_type=self.summary_type, hidden_size=input_size)  # type: ignore
+            self.sequence_summary = SequenceSummary(config)  # noqa
 
         if device:
             self.to(device)

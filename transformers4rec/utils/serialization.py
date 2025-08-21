@@ -38,10 +38,10 @@ BASE_SERIALIZATION_CLASSES = {
     "torch.nn.modules.loss": ["CrossEntropyLoss"],
     "merlin_standard_lib.schema.schema": ["Schema", "ColumnSchema"],
     "merlin_standard_lib.proto.schema_bp": [
-        "FeaturePresence", "FeaturePresenceWithinGroup", "FeatureType", "FixedShape", "ValueCount", "ValueCountList", 
-        "IntDomain", "FloatDomain", "StringDomain", "BoolDomain", "StructDomain", "NaturalLanguageDomain", 
-        "FeatureCoverageConstraints", "SequenceLengthConstraints", "ImageDomain", "MIDDomain", "URLDomain", 
-        "TimeDomain", "TimeOfDayDomain", "DistributionConstraints", "Annotation", "FeatureComparator", "InfinityNorm", 
+        "FeaturePresence", "FeaturePresenceWithinGroup", "FeatureType", "FixedShape", "ValueCount", "ValueCountList",
+        "IntDomain", "FloatDomain", "StringDomain", "BoolDomain", "StructDomain", "NaturalLanguageDomain",
+        "FeatureCoverageConstraints", "SequenceLengthConstraints", "ImageDomain", "MIDDomain", "URLDomain",
+        "TimeDomain", "TimeOfDayDomain", "DistributionConstraints", "Annotation", "FeatureComparator", "InfinityNorm",
         "JensenShannonDivergence", "UniqueConstraints", "DatasetConstraints", "NumericValueComparator"],
     "torch.nn.init": ["kaiming_normal_", "kaiming_uniform_", "xavier_normal_", "xavier_uniform_", "uniform_", "normal_", "zeros_", "ones_"],
     "torch._utils": ["_rebuild_tensor_v2", "_rebuild_parameter"],
@@ -62,7 +62,7 @@ BASE_SERIALIZATION_CLASSES = {
     "torchmetrics.utilities.data": ["dim_zero_cat"],
     "transformers.models.xlnet.modeling_xlnet": ["XLNetModel", "XLNetLayer", "XLNetRelativeAttention", "XLNetFeedForward"],
     "transformers.activations": ["GELUActivation"],
-    "transformers.modeling_utils": ["SequenceSummary"],
+    "transformers.modeling_tf_utils": ["TFSequenceSummary"],
     "builtins": ["getattr"],
 
 }

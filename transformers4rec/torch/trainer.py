@@ -313,7 +313,7 @@ class Trainer(BaseTrainer):
             optimizer, num_warmup_steps=num_warmup_steps, num_training_steps=num_training_steps
         )
 
-    def compute_loss(self, model, inputs, return_outputs=False):
+    def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
         """
         Overriding :obj:`Trainer.compute_loss()`
         To allow for passing the targets to the model's forward method
@@ -406,7 +406,7 @@ class Trainer(BaseTrainer):
         description: str,
         prediction_loss_only: Optional[bool] = None,
         ignore_keys: Optional[List[str]] = None,
-        metric_key_prefix: Optional[str] = "eval",
+        metric_key_prefix: str = "eval",
     ) -> EvalLoopOutput:
         """
         Overriding :obj:`Trainer.prediction_loop()`
@@ -827,13 +827,13 @@ class Trainer(BaseTrainer):
 
         return general_global_step
 
-    def log(self, logs: Dict[str, float]) -> None:
+    def log(self, logs: Dict[str, float], start_time: Optional[float] = None) -> None:
         # Ensuring that eval metrics are prefixed as "eval_" so that the HF integration loggers
         # do not prefix metrics names with 'train/' (as 'train/' is always added when not eval)
         logs = {re.sub("^eval/", "eval_", k).replace("train/", ""): v for k, v in logs.items()}
 
         if not self.incremental_logging:
-            super().log(logs)
+            super().log(logs, start_time)
         else:
             # If Incremental logging is enabled, ensures that global steps are always
             # incremented after train() calls
